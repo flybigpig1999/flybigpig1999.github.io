@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,6 +156,185 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/27/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="flybigpig">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大大的飞猪Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/27/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">搭建基于Github的Hexo博客</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-27 14:29:40" itemprop="dateCreated datePublished" datetime="2021-07-27T14:29:40+08:00">2021-07-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-28 12:32:21" itemprop="dateModified" datetime="2021-07-28T12:32:21+08:00">2021-07-28</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>首先感谢codesheep（B站up）的视频指导</strong></p>
+<h2 id="1-首先下载Node-js"><a href="#1-首先下载Node-js" class="headerlink" title="1.首先下载Node.js"></a>1.首先下载Node.js</h2><p>网址：<a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node</a> 下载LTS版本</p>
+<p>直接全部点next（自己修改下安装路径），然后完成安装</p>
+<p>检查安装结果：打开Git Bash 输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v ##检查node安装的版本</span><br><span class="line">npm -v  ##检查npm（node package manager）安装的版本</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/1.PNG" alt="1"></p>
+<p>npm(node安装完自带的)是用来安装之后所需<strong>包</strong>的工具(基于Node.js的javascript代码包管理工具)</p>
+<p>如果下载是.<code>msi</code>格式的安装包，，那么Node会自动在系统变量path中添加安装路径（如果变量添加成功，则上面查node版本肯定可以成功）</p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/3.PNG" alt="3"></p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/4.PNG" alt="4"></p>
+<h2 id="2-Node环境配置"><a href="#2-Node环境配置" class="headerlink" title="2.Node环境配置"></a>2.Node环境配置</h2><p>配置目标：npm安装的全局模块的路径、缓存cache的路径（将npm安装的东西，放到Node的安装路径，统一管理）</p>
+<p>环境配置的理由：在执行类似：<code>npm install -g XXXX</code> （后面的参数-g，代表global全局安装的意思）的安装语句时，会将安装的模块安装到【C:\Users\用户名\AppData\Roaming\npm】路径中（因为用户变量Path内，node默认配置了<code>C:\Users\用户名\AppData\Roaming\npm</code>作为模块的安装路径）。<strong>主要是不想在用npm装东西时，把东西自动放C盘占地方</strong></p>
+<ol>
+<li>创建两个文件夹【Node.js安装路径】下创建两个文件夹【node_global】及【node_cache】</li>
+</ol>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/2.png" alt="2"></p>
+<p>创建两个文件夹之后，Git Bash 输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config set prefix &quot;node安装路径\node_global&quot;</span><br><span class="line">npm config set cache &quot;node安装路径\node_cache&quot;</span><br></pre></td></tr></table></figure>
+
+<p>以上操作表示：修改全局包下载目录为<code>安装路径\node_global</code>,缓存目录为<code>安装路径\node_cache</code>,输入上面命令后会自动创建<code>node_global</code>目录，而<code>node_cache</code>目录会在下载全局包时自动创建</p>
+<ol start="2">
+<li><p>修改环境变量</p>
+<p>在<code>环境变量</code>—&gt;<code>系统变量</code>下新建<code>NODE_PATH</code>，值：Node安装路径\node_global\node_modules</p>
+<p>在<code>环境变量</code>—&gt;<code>用户变量</code>下的<code>Path</code>内，将<code>C:\Users\用户名\AppData\Roaming\npm</code>修改为<code>Node安装路径\node_global</code></p>
+</li>
+<li><p>测试修改效果</p>
+<p>在Git Bash内输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g express</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/5.PNG" alt="5"></p>
+<p>在<code>node安装路径\node_global\node_modules</code>内出现了express的包，说明环境配置成功，以后新装的package都会出现在这个目录下</p>
+</li>
+</ol>
+<h2 id="3-更换npm源"><a href="#3-更换npm源" class="headerlink" title="3.更换npm源"></a>3.更换npm源</h2><p>1-2中完成了Node的下载和环境配置，接下来就要用Node的工具npm来安装hexo博客框架了。但是，因为用npm下载慢，所以装阿里的镜像npm-&gt;cnpm，Git Bash输入命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>cnpm包就会出现在与express相同的地方（同样可以通过cnpm -v的形式查验安装版本）</p>
+<h2 id="4-安装Hexo"><a href="#4-安装Hexo" class="headerlink" title="4.安装Hexo"></a>4.安装Hexo</h2><p>安装好cnpm后，就可以用cnpm的命令下载hexo了</p>
+<p>Git Bash输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>安装完可以通过hexo -v验证，hexo包会出现在与express相同的地方</p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/11.PNG" alt="11"></p>
+<h2 id="5-创建本地博客"><a href="#5-创建本地博客" class="headerlink" title="5.创建本地博客"></a>5.创建本地博客</h2><p>下载好hexo之后，找个地方创建一个文件夹-我命名为Blog，Git Bash通过cd命令进入Blog路径下（一定要进入Blog文件夹的路径下）</p>
+<p> 输入下面命令，会在Blog文件夹下，初始化hexo博客架构（会自动生成一个hello world的博客）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p>如果要创建自己的博客，首先通过cd命令进入路径Blog/source/_posts（文章都放在这个目录下）</p>
+<p>输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n &quot;我的第一篇博客&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后输入下面命令，生成刚创建（new）的博文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean ##清理缓存 </span><br><span class="line">hexo g ##创建generate</span><br><span class="line">hexo s ##启动server</span><br></pre></td></tr></table></figure>
+
+<p>然后在浏览器中打开链接<a target="_blank" rel="noopener" href="http://localhost:4000/%EF%BC%8C%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%E4%BA%86">http://localhost:4000/，就可以看到自己的博客了</a></p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/10.PNG" alt="10"></p>
+<h2 id="6-创建Github博客"><a href="#6-创建Github博客" class="headerlink" title="6.创建Github博客"></a>6.创建Github博客</h2><ol>
+<li><p>在注册github账户后，创建仓库<code>create a new repository</code></p>
+<p><strong>用户部署个人博客的gihub仓库的命名必须符合特定要求</strong>，即repository name：owner name.github.io</p>
+<p>例如：owner：qingjiu 那么 repository name必须为qingjiu.github.io</p>
+</li>
+<li><p>安装github的插件</p>
+<p>在Blog目录下安装，输入如下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<p>这个可以帮助把本地博客推送（deploy）到github</p>
+</li>
+<li><p>配置_config.yml文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim _config.vml ##进入_config.yml文件</span><br></pre></td></tr></table></figure>
+
+<p>找到<code>deploy</code>的下面</p>
+<p>在<code>type：</code>后写git</p>
+<p>添加<code>repo：</code>写自己github仓库的HTTPS地址，例如<a target="_blank" rel="noopener" href="https://github.com/flybigpig1999/flybigpig1999.github.io.git">https://github.com/flybigpig1999/flybigpig1999.github.io.git</a></p>
+<p>添加<code>brach：maser</code>（冒号后面要空一格）</p>
+</li>
+<li><p>配置Git（全篇都是用Git Bash来输入命令，所以应该在最开始安装Git就配置好）</p>
+<p><strong>在安装完Git后应当首先配置下Git的个人信息</strong>，在Git Bash内输入如下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name ##在user.name处写自己的github名字</span><br><span class="line">git config --golbal user.email ##在user.email处写自己的github注册邮箱</span><br></pre></td></tr></table></figure>
+
+<p>如果想要查询Git的config信息，输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br></pre></td></tr></table></figure></li>
+<li><p>将本地博客推送到github</p>
+<p>在推送本地博客到github之前，想要免密推送，需要生成秘钥</p>
+<p>Git Bash输入秘钥生成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t -ras -C &quot;你的github注册邮箱&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后一直回车，系统会自动在<code>C:\Users\用户\</code>目录下生成**.ssh文件夹 **</p>
+<p>用记事本打开id_rsa.pub（公共秘钥），复制给出的所有文本，登录github，在右上角用户图标下拉栏目里找到Settings</p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/6.PNG" alt="6"></p>
+<p>然后在左侧栏目，找到SSH and GPG keys，创建SSH keys（title随便取，Key栏里粘贴刚才复制的公共秘钥）</p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/7.PNG" alt="7"></p>
+<p>粘贴好之后确认生成秘钥，然后可以通过在Git Bash输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>检测连接是否成功</p>
+<p>如果出现下面这种情况（connection refused连接被拒绝）</p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/8.PNG" alt="8"></p>
+<p>可以输入下面的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -vT git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>修复完之后再输入-T的命令，重新验证是否连接成功</p>
+<p><img src="/images/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAHexo-github%E5%8D%9A%E5%AE%A2/9.PNG" alt="9"></p>
+<p>这样就是成功了successfully，然后就可以免密推送（deploy）博客到github了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d ##在hexo g之后推送；hexo s仅仅是本地查看，会一直运行，需要Ctrl+C退出</span><br></pre></td></tr></table></figure>
+
+<p>最后，可以在链接为：<code>用户名.github.io</code>  下查看github博客的内容</p>
+<h3 id="至此，基于github的hexo博客就搭建完成了！"><a href="#至此，基于github的hexo博客就搭建完成了！" class="headerlink" title="至此，基于github的hexo博客就搭建完成了！"></a><strong>至此，基于github的hexo博客就搭建完成了！</strong></h3></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/24/%E9%87%91%E5%88%9A%E5%8A%9F%E5%92%8C%E9%95%BF%E5%AF%BF%E5%8A%9F%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -181,7 +360,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-07-24 12:00:26 / 修改时间：22:09:10" itemprop="dateCreated datePublished" datetime="2021-07-24T12:00:26+08:00">2021-07-24</time>
+      <time title="创建时间：2021-07-24 12:00:26 / 修改时间：22:30:30" itemprop="dateCreated datePublished" datetime="2021-07-24T12:00:26+08:00">2021-07-24</time>
     </span>
 
   
@@ -200,7 +379,7 @@
 <hr>
 <h2 id="起势"><a href="#起势" class="headerlink" title="起势"></a>起势</h2><ol>
 <li>两脚并拢，身体直立，双手自然下垂放于身体两侧，目视前方。静心，放松，排除杂念。</li>
-<li>左脚拉开，与肩同宽。五指并拢，稍用力，伸直。两臂伸直，两手向体侧略转，手掌向后稍斜（即两臂带动手掌略微内转，两掌掌心从直线连接，变成，掌心射线形成夹角，角指身后）</li>
+<li>左脚拉开，与肩同宽。五指并拢，稍用力（一定要用力）。两臂伸直，两手向体侧略转，手掌向后稍斜（即两臂带动手掌略微内转，两掌掌心从直线连接，变成，掌心射线形成夹角，角指身后）</li>
 <li>两手由体侧向上提（过程中保持手掌五指稍用力），至腰部指尖对肋，两手继续向前至腹部（两手掌相叠，自然仰平）。一手在脐上，一手在脐下。两手劳宫穴（握拳时，中指尖指向处）处在一条直线，上下相对。气归中宫（心与肾中间处）。</li>
 </ol>
 <p><strong>脚趾抓地，肩部放松，动作要缓慢</strong></p>
@@ -209,9 +388,9 @@
 <li>然后，直臂向身体两侧渐举，至与肩平，稍停。五指并拢，以腕为轴，手掌用力，向上立掌，掌心向外</li>
 <li>然后，曲肘，两手仰掌，向头顶百会穴（头顶正中线与两耳尖连线的交叉处）处相靠，两中指尖相接于百会穴上两指宽外，手背直掌相靠，指尖向天，两臂用力，向上方直插，稍停。</li>
 <li>两手分开，两臂向体侧渐降至于肩平，掌心朝下。以腕为轴，手掌用力，向下垂掌，掌心向内。</li>
-<li>然后，两臂向下搂抱至腹部，两手相贴脐部</li>
+<li>然后，两臂向下搂抱至腹部，两手相合，贴于脐部</li>
 </ol>
-<p><strong>该动作做5遍起步，最多做9遍</strong></p>
+<p><strong>向上冲要用力，缓缓放平，向下也要用力压。该动作做5遍起步，最多做9遍</strong></p>
 <h2 id="第二部-手足前后固腰肾"><a href="#第二部-手足前后固腰肾" class="headerlink" title="第二部 手足前后固腰肾"></a>第二部 手足前后固腰肾</h2><ol>
 <li>两手合掌（掌中空心）至于胸前。左脚朝左前方迈出一步，腿直身正。合掌向前冲出，直臂与肩同高，目视前方。</li>
 <li>两手翻掌，掌背紧贴。两手分开，向两侧平展，掌心向后，两臂形成一字，稍停。</li>
@@ -222,7 +401,7 @@
 <li>合掌收回，前腿收回，两脚与肩同宽，自然站立，稍停。</li>
 <li>换右腿迈出，重复之前动作</li>
 </ol>
-<p><strong>双手在背后合掌后，要猛提，到顶稍定，慢慢下推。该动作至多9遍，结束后攥方拳（拇指对着四个指甲盖扣住）</strong></p>
+<p><strong>向外要猛冲，慢慢把双手在背后合掌，然后要猛提，到顶稍定，慢慢下推。该动作至多9遍，结束后攥方拳（拇指对着四个指甲盖扣住）</strong></p>
 <h2 id="第三部-调理脾肤需单举"><a href="#第三部-调理脾肤需单举" class="headerlink" title="第三部 调理脾肤需单举"></a>第三部 调理脾肤需单举</h2><ol>
 <li>两掌攥拳（四指内屈，拇指指甲与食指指甲相顶），掌心朝上，置于脐上</li>
 <li>左脚横迈出一大步，双拳移至腰侧，左拳变立掌（掌心朝前），右拳变平掌（掌心朝下-即阴平掌），右掌背中部贴于左掌根</li>
@@ -231,7 +410,7 @@
 <li>双拳移到腹部</li>
 <li>换右侧，重复之前动作</li>
 </ol>
-<p><strong>上举鼎，下按兽的感觉，翻掌要猛，然后攥拳</strong></p>
+<p><strong>上举鼎，下按兽的感觉，翻掌要猛，然后攥拳，收拳要有上拉下拽的感觉</strong></p>
 <h2 id="第四部-左肝右肺如射雕"><a href="#第四部-左肝右肺如射雕" class="headerlink" title="第四部 左肝右肺如射雕"></a>第四部 左肝右肺如射雕</h2><ol>
 <li>左脚向左迈开一大步</li>
 <li>双拳变掌，掌心相对，两臂平行向左伸直，与肩平齐。然后，从上向右旋转两圈</li>
@@ -241,7 +420,7 @@
 <li>攥拳，回收</li>
 <li>换右侧，重复之前动作</li>
 </ol>
-<p><strong>翻掌猛，不要耸肩，转圈时手掌呈45°</strong></p>
+<p><strong>两手转圈时，头、身体都要跟手一起动起来；翻掌猛，不要耸肩，转圈时手掌呈45°</strong></p>
 <h2 id="第五部-回头望足去心疾"><a href="#第五部-回头望足去心疾" class="headerlink" title="第五部 回头望足去心疾"></a>第五部 回头望足去心疾</h2><ol>
 <li>左拳变仰掌，向上提到左腋，右掌也掌心朝上，提至右胸</li>
 <li>右掌下翻（并下推，沿左脚向左前上方画半圆形，上推到稍高于头顶），左掌指尖逐渐向下（向右脚跟方向，插去），同时身体左转，前倾成弓步</li>
@@ -265,7 +444,7 @@
 <li>第三圈时，当双手到达头顶，右手往右后方劈下</li>
 <li>以腰部带动身体，弯腰，左手指尖点右脚尖，直腰，左手举回头顶，再弯腰，反复三次</li>
 </ol>
-<p><strong>三点头时，两条手臂尽量呈一条直线；两脚的站位不要一条直线，避免拉伤</strong></p>
+<p><strong>两手转圈时，头、身体都要跟手一起动起来；三点头时，两条手臂尽量呈一条直线；两脚的站位不要一条直线，避免拉伤；要越转越快</strong></p>
 <h2 id="第八部-两足顿顿饮嗜消"><a href="#第八部-两足顿顿饮嗜消" class="headerlink" title="第八部 两足顿顿饮嗜消"></a>第八部 两足顿顿饮嗜消</h2><ol>
 <li> 双拳变掌，十指交叉，掌心朝上，沿胸中线上提至唇坑中线，稍停。</li>
 <li> 两脚并拢，脚跟慢慢抬起，放下，反复5次（前两次抬高，速度慢；第三次抬起较低，速度较快）节奏为“1-2-345”。五次为一节，至少做五节</li>
@@ -336,7 +515,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-24 12:23:46" itemprop="dateModified" datetime="2021-07-24T12:23:46+08:00">2021-07-24</time>
+        <time title="修改时间：2021-07-27 14:35:11" itemprop="dateModified" datetime="2021-07-27T14:35:11+08:00">2021-07-27</time>
       </span>
 
   
