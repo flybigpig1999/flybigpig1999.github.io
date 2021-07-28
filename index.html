@@ -187,7 +187,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-28 12:32:21" itemprop="dateModified" datetime="2021-07-28T12:32:21+08:00">2021-07-28</time>
+        <time title="修改时间：2021-07-28 12:42:08" itemprop="dateModified" datetime="2021-07-28T12:42:08+08:00">2021-07-28</time>
       </span>
 
   
@@ -201,6 +201,8 @@
     
     <div class="post-body" itemprop="articleBody">
           <p><strong>首先感谢codesheep（B站up）的视频指导</strong></p>
+<p><strong>本流程是windows下完成的，在实现过程中碰到了一些问题，使用了别人的解决方法，所以这篇博客是个自我学习总结</strong></p>
+<p><strong>一开始是用cmd窗口输入命令的，然后发现用Git Bash更好（之前学过linux的命令语言），所以建议安装Git Bash之后，在Git里面操作（安装完成后，先完成6.4的配置再从头看）</strong></p>
 <h2 id="1-首先下载Node-js"><a href="#1-首先下载Node-js" class="headerlink" title="1.首先下载Node.js"></a>1.首先下载Node.js</h2><p>网址：<a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node</a> 下载LTS版本</p>
 <p>直接全部点next（自己修改下安装路径），然后完成安装</p>
 <p>检查安装结果：打开Git Bash 输入命令</p>
@@ -234,7 +236,9 @@
 <p>在<code>node安装路径\node_global\node_modules</code>内出现了express的包，说明环境配置成功，以后新装的package都会出现在这个目录下</p>
 </li>
 </ol>
-<h2 id="3-更换npm源"><a href="#3-更换npm源" class="headerlink" title="3.更换npm源"></a>3.更换npm源</h2><p>1-2中完成了Node的下载和环境配置，接下来就要用Node的工具npm来安装hexo博客框架了。但是，因为用npm下载慢，所以装阿里的镜像npm-&gt;cnpm，Git Bash输入命令如下</p>
+<h2 id="3-更换npm源"><a href="#3-更换npm源" class="headerlink" title="3.更换npm源"></a>3.更换npm源</h2><p>1-2中完成了Node的下载和环境配置，接下来就要用Node的工具npm来安装hexo博客框架了。但是，因为用npm下载慢，所以装阿里的镜像npm-&gt;cnpm，</p>
+<p><strong>注意事项，在利用npm装东西的时候，应该将Git Bash通过管理员模式打开</strong></p>
+<p>Git Bash输入命令如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
 
 <p>cnpm包就会出现在与express相同的地方（同样可以通过cnpm -v的形式查验安装版本）</p>
