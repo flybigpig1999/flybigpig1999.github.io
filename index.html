@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -147,6 +147,762 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/06/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="flybigpig">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大大的飞猪Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/06/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/" class="post-title-link" itemprop="url">深度学习入门1</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-06 16:35:06" itemprop="dateCreated datePublished" datetime="2021-08-06T16:35:06+08:00">2021-08-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-10 21:47:21" itemprop="dateModified" datetime="2021-08-10T21:47:21+08:00">2021-08-10</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="内容概述"><a href="#内容概述" class="headerlink" title="内容概述"></a>内容概述</h1><p>神经网路与多层感知机：基础知识、激活函数、反向传播、损失函数、权值初始化和正则化<br>卷积神经网络、循环神经网络<br>人工智能&gt;机器学习&gt;人工神经网络（以神经元形式连接的机器学习模型）&gt;深度学习</p>
+<p><strong>学习资源</strong>：</p>
+<ol>
+<li>吴恩达 <a target="_blank" rel="noopener" href="http://www.deeplearning.ai/">www.deeplearning.ai</a></li>
+<li>李宏毅 B站搜索</li>
+<li>花书《deep learning》<a target="_blank" rel="noopener" href="https://github.com/exacity/deeplearningbook-chinese">https://github.com/exacity/deeplearningbook-chinese</a></li>
+<li>西瓜书《机器学习》周志华</li>
+</ol>
+<h1 id="人工神经网络"><a href="#人工神经网络" class="headerlink" title="人工神经网络"></a>人工神经网络</h1><p>概念：</p>
+<p>perception（感知机）</p>
+<p>activation function（激活函数）</p>
+<p>back propagation（反向传播）</p>
+<h1 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h1><p>激活函数引用目的：</p>
+<ol>
+<li>令多层感知机真正的成为多层，而不是退化为一层</li>
+<li>引入非线性，使网络可以逼近任意非线性函数（万能逼近定理，universal approximator）</li>
+</ol>
+<p>激活函数需要具备的性质：</p>
+<ol>
+<li>连续并可导（允许少数点不可导），便于利用数值优化的方法学习网络参数（<strong>什么叫数值优化？</strong>）</li>
+<li>激活函数和其导函数要尽量<strong>简单</strong>，有利于提高网络计算效率</li>
+<li>激活函数的导函数的<strong>值域</strong>要在<strong>合适</strong>区间，否则会影响训练效率和稳定性</li>
+</ol>
+<p>常见激活函数：</p>
+<p>Sigmoid函数、tanh函数、Relu函数</p>
+<h1 id="单层感知机"><a href="#单层感知机" class="headerlink" title="单层感知机"></a>单层感知机</h1><p>输入*权重=输出（无隐藏层）</p>
+<p>F（&lt;Xn·Wn&gt;+偏置b）=O——以向量乘法&lt;A·B&gt;（单行矩阵乘法）来表示单层感知机计算，再放进F函数（激活函数）</p>
+<p><img src="/../images/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/1.PNG" alt="1"></p>
+<p>上图为单层感知机，其缺点：无法解决<code>异或问题</code></p>
+<h1 id="多层感知机（Multi-Perception，MLP）"><a href="#多层感知机（Multi-Perception，MLP）" class="headerlink" title="多层感知机（Multi Perception，MLP）"></a>多层感知机（Multi Perception，MLP）</h1><p>在单层感知机的基础上，添加一个或多个隐藏层</p>
+<p>输入 * 权重 = 输出（隐藏层1）—&gt;隐藏层1 * 权重 = 输出（隐藏层2）…隐藏层n  * 权重=输出层</p>
+<p><img src="/../images/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/2.PNG" alt="2"></p>
+<p><strong>矩阵表示</strong>：X<del>1*n</del>表示输入矩阵；W1<del>n*m</del>表示权重矩阵(n-输入，m-输出)；H<del>1*m</del>表示隐藏层矩阵；W2<del>m*k</del>；O<del>1*k</del>表示输出矩阵</p>
+<p>​                    X*W1+b1=H  </p>
+<p>​                    H*W2+b2=O(b是偏置项)    </p>
+<p>ps：<strong>这部分其实不对，输入*权重的结果经过activation function 才会成为H</strong></p>
+<p><strong>多层感知机的激活函数</strong>：如果无激活函数，多层感知机会退化为单层网络，<br>$$<br>\begin{aligned}<br>\mathbf{H} &amp;=\mathbf{W}<em>{1} \mathbf{X}+\mathbf{b}</em>{1}\<br>\mathbf{O} &amp;=\mathbf{W}<em>{2} \mathbf{H}+b</em>{2} =\mathbf{W}<em>{2}(\mathbf{W}</em>{1} \mathbf{X}+\mathbf{b}<em>{1})+\mathbf{b}</em>{2} =\mathbf{W}<em>{2}\mathbf{W}</em>{1}\mathbf{X}<br>+\mathbf{W}<em>{2}\mathbf{b}</em>{1}+\mathbf{b}_{2}<br>\end{aligned}<br>$$<br><code>X经过两层权重计算输出结果O，通过计算，结果可以等效成X经过W1W2的乘积（即一层权重网络），然后加上后半部分，也就是说，X经过两层网络，但实际结果可以等效成经过一层网络，这就叫退化成单层网络</code></p>
+<p>所以在经过第一层权重计算后，要通过激活函数（<strong>为什么W2要转置呢？</strong>）<br>$$<br>\begin{aligned}<br>\mathbf{H} &amp;=\mathbf{F}\left(\mathbf{W}<em>{1} \mathbf{X}+\mathbf{b}</em>{1}\right) \<br>\mathbf{O} &amp;=\mathbf{W}<em>{2}^{T} \mathbf{H}+b</em>{2}<br>\end{aligned}<br>$$</p>
+<h1 id="反向传播（Back-propagation）"><a href="#反向传播（Back-propagation）" class="headerlink" title="反向传播（Back propagation）"></a>反向传播（Back propagation）</h1><p>机器学习可以看做是数理统计的一个应用。在数理统计中一个常见的任务就是<strong>拟合</strong>，也就是给定一些样本点，用合适的曲线（函数）揭示这些样本点随着自变量的变化关系。</p>
+<p>深度学习同样也是为了这个目的，只不过此时，样本点不再限定为(x, y)点对，而可以是由向量、矩阵等等组成的广义点对(X,Y)。而此时，(X,Y)之间的关系也变得十分复杂，不太可能用一个简单函数表示。然而，人们发现可以用多层神经网络来表示这样的关系，而多层神经网络的本质就是一个多层复合的函数。借用网上找到的一幅图，来直观描绘一下这种复合关系。</p>
+<p><img src="/../images/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/5.jpg" alt="5"></p>
+<p>表达式如下（输入x经过加权相乘，然后加偏置向，然后通过激活函数）：</p>
+<p><img src="/../images/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/6.png" alt="6"></p>
+<p>式中的W<del>ij</del>就是相邻两层神经元之间的权值，它们就是深度学习需要学习的参数，也就相当于直线拟合y=k*x+b中的待求参数k和b。</p>
+<p>和直线拟合一样，深度学习的训练也有一个目标函数，这个目标函数定义了什么样的权值参数才算一组“好参数”，在机器学习中，一般是采用损失函数（cost function）作为目标，然后，训练目标就是通过调整每一个权值Wij来使得cost达到最小。cost函数也可以看成是由所有待求权值Wij为自变量的复合函数，而且基本上是非凸的，即含有许多局部最小值。但实际中发现，采用我们常用的<strong>梯度下降法？</strong>就可以有效的求解最小化cost函数的问题。</p>
+<p>梯度下降法需要给定一个初始点，并求出该点的梯度向量，然后以负梯度方向为搜索方向，以一定的步长进行搜索，从而确定下一个迭代点，再计算该新的梯度方向，如此重复直到cost收敛。那么如何计算梯度呢？</p>
+<p>假设我们把cost函数表示为<img src="https://www.zhihu.com/equation?tex=H(W_%7B11%7D,+W_%7B12%7D,+%5Ccdots+,+W_%7Bij%7D,+%5Ccdots,+W_%7Bmn%7D)" alt="[公式]">, 那么它的梯度向量就等于<img src="https://www.zhihu.com/equation?tex=%5Cnabla+H++=+%5Cfrac%7B%5Cpartial+H%7D%7B%5Cpartial+W_%7B11%7D+%7D%5Cmathbf%7Be%7D_%7B11%7D+++%5Ccdots+++%5Cfrac%7B%5Cpartial+H%7D%7B%5Cpartial+W_%7Bmn%7D+%7D%5Cmathbf%7Be%7D_%7Bmn%7D" alt="[公式]">, 其中<img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Be%7D_%7Bij%7D" alt="[公式]">表示正交单位向量。为此，我们需求出cost函数H对每一个权值Wij的偏导数。而<strong>BP算法正是用来求解这种多层复合函数的所有变量的偏导数的利器</strong>。</p>
+<p><strong>求cost最小值——&gt;使用梯度下降法——&gt;求初始点梯度——&gt;求cost函数对权值W的偏导数——&gt;使用BP算法</strong></p>
+<p>概念：从损失函数开始，从后向前传输<strong>梯度</strong>到第一层</p>
+<p>作用：更新<strong>权重</strong>，使网络输出更接近标签（label）</p>
+<p>反向传播的基本原理：<strong>微积分的链式求导法则</strong><br>$$<br>\begin{equation}<br>y=f(u), u=g(x) \quad \frac{\partial y}{\partial x}=\frac{\partial y}{\partial u} \frac{\partial u}{\partial x}<br>\end{equation}<br>$$<br>举例子：</p>
+<p>作者：Anonymous<br>链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27239198/answer/89853077">https://www.zhihu.com/question/27239198/answer/89853077</a><br>来源：知乎</p>
+<p>我们以求e=(a+b)*(b+1)的偏导为例。<br>它的复合关系画出图可以表示如下：</p>
+<p><img src="https://pic2.zhimg.com/80/ee59254c9432b47cfcc3b11eab3e5984_720w.jpg?source=1940ef5c" alt="img"></p>
+<p>在图中，引入了中间变量c,d。</p>
+<p>为了求出a=2, b=1时，e的梯度，我们可以先利用偏导数的定义求出不同层之间相邻节点的偏导关系，如下图所示。</p>
+<p><img src="https://pic2.zhimg.com/50/986aacfebb87f4e9573fa2fe87f439d1_720w.jpg?source=1940ef5c" alt="img"><img src="https://pic2.zhimg.com/80/986aacfebb87f4e9573fa2fe87f439d1_720w.jpg?source=1940ef5c" alt="img"></p>
+<p>利用链式法则我们知道：<br><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+a%7D=%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+c%7D%5Ccdot+%5Cfrac%7B%5Cpartial+c%7D%7B%5Cpartial+a%7D" alt="[公式]">以及<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+b%7D=%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+c%7D%5Ccdot+%5Cfrac%7B%5Cpartial+c%7D%7B%5Cpartial+b%7D+%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+d%7D%5Ccdot+%5Cfrac%7B%5Cpartial+d%7D%7B%5Cpartial+b%7D" alt="[公式]">。</p>
+<p>链式法则在上图中的意义是什么呢？其实不难发现，<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+a%7D" alt="[公式]">的值等于从a到e的路径上的偏导值的乘积，而<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+e%7D%7B%5Cpartial+b%7D" alt="[公式]">的值等于从b到e的路径1(b-c-e)上的偏导值的乘积加上路径2(b-d-e)上的偏导值的乘积。也就是说，对于上层节点p和下层节点q，要求得<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+p%7D%7B%5Cpartial+q%7D" alt="[公式]">，需要找到从q节点到p节点的所有路径，并且对每条路径，求得该路径上的所有偏导数之乘积，然后将所有路径的 “乘积” 累加起来才能得到<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+p%7D%7B%5Cpartial+q%7D" alt="[公式]">的值。</p>
+<p>这样做是十分冗余的，因为很多<strong>路径被重复访问了</strong>。比如上图中，a-c-e和b-c-e就都走了路径c-e。对于权值动则数万的深度模型中的神经网络，这样的冗余所导致的计算量是相当大的。</p>
+<p><strong>同样是利用链式法则，BP算法则机智地避开了这种冗余，它对于每一个路径只访问一次就能求顶点对所有下层节点的偏导值。</strong><br>正如反向传播(BP)算法的名字说的那样，BP算法是反向(自上往下)来寻找路径的。</p>
+<p>从最上层的节点e开始，初始值为1，以层为单位进行处理。对于e的下一层的所有子节点，将1乘以e到某个节点路径上的偏导值，并将结果“堆放”在该子节点中。等e所在的层按照这样传播完毕后，第二层的每一个节点都“堆放”些值，然后我们针对每个节点，把它里面所有“堆放”的值求和，就得到了顶点e对该节点的偏导。然后将这些第二层的节点各自作为起始顶点，初始值设为顶点e对它们的偏导值，以”层”为单位重复上述传播过程，即可求出顶点e对每一层节点的偏导数。</p>
+<p>以上图为例，节点c接受e发送的1<em>2并堆放起来，节点d接受e发送的1</em>3并堆放起来，至此第二层完毕，求出各节点总堆放量并继续向下一层发送。节点c向a发送2<em>1并对堆放起来，节点c向b发送2</em>1并堆放起来，节点d向b发送3<em>1并堆放起来，至此第三层完毕，节点a堆放起来的量为2，节点b堆放起来的量为2</em>1+3*1=5, 即顶点e对b的偏导数为5.</p>
+<p>举个不太恰当的例子，如果把上图中的箭头表示欠钱的关系，即c→e表示e欠c的钱。以a, b为例，直接计算e对它们俩的偏导相当于a, b各自去讨薪。a向c讨薪，c说e欠我钱，你向他要。于是a又跨过c去找e。b先向c讨薪，同样又转向e，b又向d讨薪，再次转向e。可以看到，追款之路，充满艰辛，而且还有重复，即a, b 都从c转向e。</p>
+<p>而BP算法就是主动还款。e把所欠之钱还给c，d。c，d收到钱，乐呵地把钱转发给了a，b，皆大欢喜。</p>
+<h1 id="学习率"><a href="#学习率" class="headerlink" title="学习率"></a>学习率</h1><p>作用：控制更新步长（通常小于1）</p>
+<p>x<del>i+1</del>=x<del>i</del>-k*f’(x<del>i</del>)</p>
+<h1 id="损失函数（Loss-function）"><a href="#损失函数（Loss-function）" class="headerlink" title="损失函数（Loss function）"></a><strong>损失函数</strong>（Loss function）</h1><p><strong>损失函数</strong>：衡量模型与真实标签之间的差异（针对单样本）<br>$$<br>\begin{aligned}<br>\mathbf{Loss} &amp;=\mathbf{f}\left(\mathbf{y}<em>{o},\mathbf{y}\right) \<br>\end{aligned}<br>$$<br><strong>代价函数</strong>（cost function）：针对样本总体<br>$$<br>\begin{aligned}<br>\operatorname{Cost} =\frac{1}{N} \sum</em>{i}^{N} f\left(y_{o}, y_{i}\right)<br>\end{aligned}<br>$$<br><strong>目标函数</strong>（objective function）Obj=Cost（要小）+Rgularization Term(正则项，让模型不会过于复杂)</p>
+<p>常见损失函数</p>
+<ol>
+<li>MSE（mean square error）均方误差</li>
+</ol>
+<p>$$<br>M S E=\frac{\sum_{i=1}^{n}\left(y_{o}-y_{lable}\right)^{2}}{n}<br>$$</p>
+<ol start="2">
+<li>CE（cross entropy ）交叉熵</li>
+</ol>
+<p>$$<br>H(p, q)=-\sum_{i=1}^{n} p\left(x_{i}\right) \log q\left(x_{i}\right)<br>$$</p>
+<p>为什么用交叉熵来衡量两种分布之间的差异（p表示目标分布，q表示计算出来的分布——要让q逼近p）<br>$$<br>\begin{aligned}<br>&amp;D_{K L}(P | Q)=E_{x-p}\left[\log \frac{P(x)}{Q(x)}\right]=E_{x \sim p}[\log P(x)-\log Q(x)] \<br>&amp;=\sum_{i=1}^{N} \mathrm{P}\left(\mathrm{x}<em>{i}\right)\left(\log P\left(\mathrm{x}</em>{i}\right)-\log \mathrm{Q}\left(\mathrm{x}<em>{i}\right)\right) \<br>&amp;H(p, q)=-\sum</em>{i=1}^{n} p\left(x_{i}\right) \log q\left(x_{i}\right) \<br>&amp;H(\mathrm{x})=E_{x-p}[I(x)]=-E[\log P(x)]=-\sum_{i=1}^{N} p_{i} \log \left(p_{i}\right)<br>\end{aligned}<br>$$<br>相对熵D<del>KL</del>+信息熵H(x) = 交叉熵H(p,q) </p>
+<p> <strong>优化交叉熵等价于优化相对熵（因为H(P)作为要逼近的目标，信息是确定的）</strong></p>
+<p>模型输出的结果可能大于1，不符合概率分布的形式，即无法用交叉熵的形式计算</p>
+<p>所以Softmax函数可以实现将数据变换到符合概率分布的形式<br>$$<br>y_{i}=S(\boldsymbol{z})<em>{i}=\frac{e^{z</em>{i}}}{\sum_{j=1}^{C} e_{j}^{z_{j}}}, i=1, \ldots, C<br>$$</p>
+<h1 id="权值初始化"><a href="#权值初始化" class="headerlink" title="权值初始化"></a>权值初始化</h1><p>随机初始化：从高斯分布中随机采样，对权重赋值，随机初始化（3σ准则：数值分布在均值μ左右3σ的概率要达到99.73%）——初始权重不能太大，不然后面计算结果经过激活函数后，会达到饱和区，梯度就近乎没有了</p>
+<p>随机分布的标准差会影响权重大小，如何设置标准差</p>
+<p>自适应标准差：Xavier初始化、Kaiming初始化（MSRA法）</p>
+<h1 id="正则化方法（Regularization）"><a href="#正则化方法（Regularization）" class="headerlink" title="正则化方法（Regularization）"></a>正则化方法（Regularization）</h1><p>正则化是为了减小方差，即减轻<strong>过拟合</strong>（方差过大导致训练集表现好，测试集表现不好）的方法</p>
+<p>误差=偏差+方差+噪声</p>
+<p>偏差：度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本身的拟合能力</p>
+<p>方差：度量了同样大小的训练集的变动所导致的学习性能的变化，即刻画了数据扰动所造成的影响</p>
+<p>噪声：则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/04/%E5%AD%A6%E4%B9%A0%E6%8B%BC%E9%9F%B3%E6%89%93%E5%AD%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="flybigpig">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大大的飞猪Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/04/%E5%AD%A6%E4%B9%A0%E6%8B%BC%E9%9F%B3%E6%89%93%E5%AD%97/" class="post-title-link" itemprop="url">学习拼音打字</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-08-04 13:06:17 / 修改时间：17:32:38" itemprop="dateCreated datePublished" datetime="2021-08-04T13:06:17+08:00">2021-08-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="拼音打字"><a href="#拼音打字" class="headerlink" title="拼音打字"></a>拼音打字</h1><hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>一个字的读音称：音节（朱——zh+u，第一声）</p>
+<p>所有字的音节分三种：1.双音节（声母+韵母）  3.单音节（没声母，只有韵母） 4.三音节（声母+介母+韵母）</p>
+<p>a 啊 单音节<br>m+a 妈 双音节<br>l+i+ang 亮 三音节</p>
+<p>声母：文字拼音的开头读音</p>
+<p>韵母：文字拼音的末尾读音</p>
+<p>范例：房（f+ang，第二声）——&gt;<strong>“f”</strong>是<strong>声母</strong>，<strong>“ang”</strong>是<strong>韵母</strong></p>
+<hr>
+<h2 id="音调"><a href="#音调" class="headerlink" title="音调"></a>音调</h2><p>妈 mā 【第一声】 麻 má 【第二声】 马 mǎ 【第三声】 骂 mà 【第四声】 吗 ma 【轻读声】</p>
+<p><strong>在按键打字时，是不分音调的。例如：输入m+a，手机会显示 ‘ma’ 这个发音的所有音调字（包括妈、麻、马、骂、吗）</strong></p>
+<hr>
+<h2 id="两、三拼音节的结构"><a href="#两、三拼音节的结构" class="headerlink" title="两、三拼音节的结构"></a>两、三拼音节的结构</h2><p><code>主要以声母+(介母，两拼音节不用这个)+韵母</code></p>
+<p><strong>声母表</strong></p>
+<p>在汉语拼音中，英文字母用中文发音，例如：<strong>b</strong>应当读成<strong>波</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>b [波bo]</strong></th>
+<th><strong>p [坡po]</strong></th>
+<th><strong>m [摸mo]</strong></th>
+<th><strong>f [佛fo]</strong></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>d [得de]</strong></td>
+<td><strong>t [特te]</strong></td>
+<td><strong>n [讷na]</strong></td>
+<td><strong>l [勒le]</strong></td>
+<td><strong>g [哥ge]</strong></td>
+<td><strong>k [科ke]</strong></td>
+<td><strong>h [喝he]</strong></td>
+</tr>
+<tr>
+<td><strong>j[基ji]</strong></td>
+<td><strong>q [欺qi]</strong></td>
+<td><strong>x [希xi]</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>z [资zi]</strong></td>
+<td><strong>c[;雌ci]</strong></td>
+<td><strong>s [思si]</strong></td>
+<td><strong>r [日ri]</strong></td>
+<td><strong>zh[知zhi]</strong></td>
+<td><strong>ch [嗤chi]</strong></td>
+<td><strong>sh [诗shi]</strong></td>
+</tr>
+<tr>
+<td><strong>y [医yi]</strong></td>
+<td><strong>w [巫wu]</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>介母表(在三拼音节中使用)</strong></p>
+<table>
+<thead>
+<tr>
+<th>i ——ia(掐q+i+a)、ian(天t+i+an)、iang(抢q+i+ang)、iao(桥q+i+ao)、iong(穷q+)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>u——ua(抓zh+u+a)、uai(踹ch+u+ai)、uan(船ch+u+an)、uang(床ch+u+ang)、uo(祸h+u+o)</strong></td>
+</tr>
+</tbody></table>
+<p><strong>韵母表（打字专用）</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>a[阿]</strong></th>
+<th><strong>o[喔]</strong></th>
+<th><strong>e[鹅]</strong></th>
+<th><strong>i[衣]</strong></th>
+<th><strong>u[乌]</strong></th>
+<th>v[迂]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ai[哀]</strong></td>
+<td><strong>ei[诶]</strong></td>
+<td><strong>ui[威]</strong></td>
+<td><strong>ao[奥]</strong></td>
+<td><strong>ou[欧]</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>an[安]</strong></td>
+<td><strong>en[恩]</strong></td>
+<td><strong>in[因]</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ang[昂]</strong></td>
+<td><strong>eng[摁]</strong></td>
+<td><strong>ing[英]</strong></td>
+<td><strong>ong[雍]</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>整体认读音节表</strong></p>
+<p><strong>yun[晕]　ye[叶]　yue[月]</strong></p>
+<p><strong>自成音节</strong></p>
+<p>只有以ɑ、o、e开头的韵母，可以加声母，独立自成一个音节,如阿ā、爱ài、袄ǎo、安ān、哦ò、欧ōu、鹅é</p>
+<hr>
+<h3 id="三拼音节"><a href="#三拼音节" class="headerlink" title="三拼音节"></a>三拼音节</h3><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>ia</strong></th>
+<th><strong>ua</strong></th>
+<th><strong>uo</strong></th>
+<th><strong>uan</strong></th>
+<th><strong>uai</strong></th>
+<th><strong>ian</strong></th>
+<th><strong>iao</strong></th>
+<th><strong>iang</strong></th>
+<th><strong>uang</strong></th>
+<th><strong>iong</strong></th>
+<th><strong>üan</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>b</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>bian(边)</strong></td>
+<td><strong>biao(表)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>p</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>pian(片)</strong></td>
+<td><strong>piao(票)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ia</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>m</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>mian(面)</strong></td>
+<td><strong>miao(秒)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>f</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>d</strong></td>
+<td><strong>dia(嗲)</strong></td>
+<td></td>
+<td><strong>duo(多)</strong></td>
+<td><strong>duan(段)</strong></td>
+<td></td>
+<td><strong>dian(点)</strong></td>
+<td><strong>diao(掉)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>t</strong></td>
+<td></td>
+<td></td>
+<td><strong>tuo(托)</strong></td>
+<td><strong>tuan(团)</strong></td>
+<td></td>
+<td><strong>tian(天)</strong></td>
+<td><strong>tiao(条)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>n</strong></td>
+<td></td>
+<td></td>
+<td><strong>nuo(糯)</strong></td>
+<td><strong>nuan(暖)</strong></td>
+<td></td>
+<td><strong>nian(年)</strong></td>
+<td><strong>niao(鸟)</strong></td>
+<td><strong>niang(娘)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>l</strong></td>
+<td></td>
+<td></td>
+<td><strong>luo(落)</strong></td>
+<td><strong>luan(乱)</strong></td>
+<td></td>
+<td><strong>lian(连)</strong></td>
+<td><strong>liao(聊)</strong></td>
+<td><strong>liang(两)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>g</strong></td>
+<td></td>
+<td><strong>gua(瓜)</strong></td>
+<td><strong>guo(锅)</strong></td>
+<td><strong>guan(罐)</strong></td>
+<td><strong>guai(乖)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>guang(光)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>k</strong></td>
+<td></td>
+<td><strong>kua(夸)</strong></td>
+<td><strong>kuo(扩)</strong></td>
+<td><strong>kuan(款)</strong></td>
+<td><strong>kuai(块)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>kuang(矿)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>h</strong></td>
+<td></td>
+<td><strong>hua(画)</strong></td>
+<td><strong>huo(火)</strong></td>
+<td><strong>huan(欢)</strong></td>
+<td><strong>huai(坏)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>huang(慌)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>j</strong></td>
+<td><strong>jia(加)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>jian(剑)</strong></td>
+<td><strong>jiao(角)</strong></td>
+<td><strong>jiang(奖)</strong></td>
+<td></td>
+<td><strong>jiong(窘)</strong></td>
+<td><strong>juan(卷)</strong></td>
+</tr>
+<tr>
+<td><strong>q</strong></td>
+<td><strong>qia(掐)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>qian(钱)</strong></td>
+<td><strong>qiao(敲)</strong></td>
+<td><strong>qiang(墙)</strong></td>
+<td></td>
+<td><strong>qiong(穷)</strong></td>
+<td><strong>quan(圈)</strong></td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td><strong>xia(下)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>xian(先)</strong></td>
+<td><strong>xiao(小)</strong></td>
+<td><strong>xiang(想)</strong></td>
+<td></td>
+<td><strong>xiong(熊)</strong></td>
+<td><strong>xuan(选)</strong></td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td></td>
+<td></td>
+<td><strong>zuo(做)</strong></td>
+<td><strong>zuan(钻)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>c</strong></td>
+<td></td>
+<td></td>
+<td><strong>cuo(错)</strong></td>
+<td><strong>cuan(窜)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>s</strong></td>
+<td></td>
+<td></td>
+<td><strong>suo(锁)</strong></td>
+<td><strong>suan(算)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>zh</strong></td>
+<td></td>
+<td><strong>zhua(抓)</strong></td>
+<td><strong>zhuo(桌)</strong></td>
+<td><strong>zhuan(赚)</strong></td>
+<td><strong>zhuai(拽)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>zhuang(装)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ch</strong></td>
+<td></td>
+<td></td>
+<td><strong>chuo(戳)</strong></td>
+<td><strong>chuan(穿)</strong></td>
+<td><strong>chuai(踹)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>chuang(床)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sh</strong></td>
+<td></td>
+<td><strong>shua(刷)</strong></td>
+<td><strong>shuo(说)</strong></td>
+<td><strong>shuan(涮)</strong></td>
+<td><strong>shuai(帅)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>shuang(双)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>r</strong></td>
+<td></td>
+<td></td>
+<td><strong>ruo(弱)</strong></td>
+<td><strong>ruan(软)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>y</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>yuan(元)</strong></td>
+</tr>
+<tr>
+<td><strong>w</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="手机按键"><a href="#手机按键" class="headerlink" title="手机按键"></a>手机按键</h3><p><strong>九键</strong></p>
+<p>从<strong>第一行第二列</strong>往右，到顶，再从第二行开头往右，再从第三行往右</p>
+<p>这是26个英文字母的正常顺序</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>abc</strong></th>
+<th><strong>def</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ghi</strong></td>
+<td><strong>jkl</strong></td>
+<td><strong>mno</strong></td>
+</tr>
+<tr>
+<td><strong>pqrs</strong></td>
+<td><strong>tuv</strong></td>
+<td><strong>wxyz</strong></td>
+</tr>
+</tbody></table>
+<p><strong>二十六键盘</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>q</strong></th>
+<th><strong>w</strong></th>
+<th><strong>e</strong></th>
+<th><strong>r</strong></th>
+<th><strong>t</strong></th>
+<th><strong>y</strong></th>
+<th><strong>u</strong></th>
+<th><strong>i</strong></th>
+<th><strong>o</strong></th>
+<th><strong>p</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td><strong>a</strong></td>
+<td><strong>s</strong></td>
+<td><strong>d</strong></td>
+<td><strong>f</strong></td>
+<td><strong>g</strong></td>
+<td><strong>h</strong></td>
+<td><strong>j</strong></td>
+<td><strong>k</strong></td>
+<td><strong>l</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>z</strong></td>
+<td><strong>x</strong></td>
+<td><strong>c</strong></td>
+<td><strong>v</strong></td>
+<td><strong>b</strong></td>
+<td><strong>n</strong></td>
+<td><strong>m</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
