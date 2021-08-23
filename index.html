@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -147,6 +147,86 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="flybigpig">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大大的飞猪Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A82/" class="post-title-link" itemprop="url">深度学习入门2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-08-17 10:28:36 / 修改时间：16:41:03" itemprop="dateCreated datePublished" datetime="2021-08-17T10:28:36+08:00">2021-08-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>学习资源</strong>：</p>
+<ol>
+<li>（全面）Machine Learning：，Tom M. Mitchell 机械工业出版社 2003年</li>
+<li>统计学习方法，李航，清华大学出版社，2012</li>
+<li>Machine Learning：A Probabilistic Perspective，K.P Murphy</li>
+<li>视频课程：Stanford web course by Andrew Ng </li>
+<li>视频课程：Stanford web course by Fei-fei Li</li>
+</ol>
+<p>没有免费午餐定理（No Free Lunch Theorem）</p>
+<p>如果我们不对特征空间有先验假设，则所有算法的平均表现是一样的</p>
+<h1 id="支持向量机（Support-Vector-Machine）"><a href="#支持向量机（Support-Vector-Machine）" class="headerlink" title="支持向量机（Support Vector Machine）"></a>支持向量机（Support Vector Machine）</h1><p>在样本数比较少的情况下，可以得到比较好的结果（小样本方法）</p>
+<p>支持向量机</p>
+<p>1.线性模型</p>
+<p>线性可分：训练集和样本集可以用一条直线分开</p>
+<p>线性不可分：训练集和样本集不可以用一条直线分开</p>
+<p>2.非线性模型</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -187,7 +267,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-10 21:47:21" itemprop="dateModified" datetime="2021-08-10T21:47:21+08:00">2021-08-10</time>
+        <time title="修改时间：2021-08-11 09:37:27" itemprop="dateModified" datetime="2021-08-11T09:37:27+08:00">2021-08-11</time>
       </span>
 
   
@@ -289,6 +369,15 @@
 <p>偏差：度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本身的拟合能力</p>
 <p>方差：度量了同样大小的训练集的变动所导致的学习性能的变化，即刻画了数据扰动所造成的影响</p>
 <p>噪声：则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界</p>
+<p>方法1.在目标函数后添加regularization term：</p>
+<p>regularization term分L1、L2两种</p>
+<p>L1:|W<del>i</del>|求和</p>
+<p>L2:|W<del>i</del>^2^|求和，也成为权值衰减（weight decay）<img src="/../images/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A81/3.PNG" alt="3"></p>
+<p>方法2.随机失活（dropout）</p>
+<p>作用：避免模型过度依赖某个神经元，减轻过拟合</p>
+<p>随机的令神经元失活（即将神经元前的权值设为0）</p>
+<p>ps：训练和测试时数据尺度会变化（测试时不会执行权重失活操作），所以测试时，神经元输出值要乘P才好对比测试和训练两数据结果？（p为随机失活的概率）</p>
+<p>其他正则化方法：batch normalization、layer normalization、instance normalization group normlizaiton</p>
 
       
     </div>
