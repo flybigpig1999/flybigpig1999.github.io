@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="卷积层（convolution layer）填充（padding）作用：因为深度学习的模型里会有很多层cov layer，而每层cov layer都会让原来的图变小（比如，33×33的picture，用 5×5的kernel，会产生28×28(33-(5-1))的新picture）。为了不让picture在许多层cov layer后变得太小，就会在输入周围额外添加行&#x2F;列  为了使输出的pictur">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大大的飞猪Blog">
+<meta property="og:url" content="http://example.com/2022/03/28/convolution%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="大大的飞猪Blog">
+<meta property="og:description" content="卷积层（convolution layer）填充（padding）作用：因为深度学习的模型里会有很多层cov layer，而每层cov layer都会让原来的图变小（比如，33×33的picture，用 5×5的kernel，会产生28×28(33-(5-1))的新picture）。为了不让picture在许多层cov layer后变得太小，就会在输入周围额外添加行&#x2F;列  为了使输出的pictur">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/1.PNG">
+<meta property="og:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/2.PNG">
+<meta property="og:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/3.PNG">
+<meta property="og:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/4.PNG">
+<meta property="og:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/5.jpg">
+<meta property="og:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/6.jpg">
+<meta property="article:published_time" content="2022-03-28T12:18:50.905Z">
+<meta property="article:modified_time" content="2022-04-11T13:08:16.201Z">
+<meta property="article:author" content="flybigpig">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/convolution%E5%AD%A6%E4%B9%A0/1.PNG">
+
+
+<link rel="canonical" href="http://example.com/2022/03/28/convolution%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/28/convolution%E5%AD%A6%E4%B9%A0/","path":"2022/03/28/convolution学习/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 大大的飞猪Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">大大的飞猪Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82%EF%BC%88convolution-layer%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">卷积层（convolution layer）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A1%AB%E5%85%85%EF%BC%88padding%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">填充（padding）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E5%B9%85%EF%BC%88stride%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">步幅（stride）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%80%9A%E9%81%93"><span class="nav-number">1.3.</span> <span class="nav-text">多通道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%BE%93%E5%85%A5"><span class="nav-number">1.3.1.</span> <span class="nav-text">多输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%BE%93%E5%87%BA"><span class="nav-number">1.3.2.</span> <span class="nav-text">多输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%BE%93%E5%85%A5%E5%92%8C%E5%A4%9A%E8%BE%93%E5%85%A5%E7%BB%93%E5%90%88%E7%90%86%E8%A7%A3"><span class="nav-number">1.3.3.</span> <span class="nav-text">多输入和多输入结合理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%A0%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">池化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E6%9C%80%E5%A4%A7%E6%B1%A0%E5%8C%96%EF%BC%88%E5%BD%93%E7%84%B6%E8%BF%98%E6%9C%89%E5%B9%B3%E5%9D%87%E6%B1%A0%E5%8C%96%E5%B1%82%EF%BC%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">二维最大池化（当然还有平均池化层）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1%C3%971%E5%8D%B7%E7%A7%AF"><span class="nav-number">1.5.</span> <span class="nav-text">1×1卷积</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">flybigpig</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/28/convolution%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="flybigpig">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大大的飞猪Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-28 20:18:50" itemprop="dateCreated datePublished" datetime="2022-03-28T20:18:50+08:00">2022-03-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-11 21:08:16" itemprop="dateModified" datetime="2022-04-11T21:08:16+08:00">2022-04-11</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="卷积层（convolution-layer）"><a href="#卷积层（convolution-layer）" class="headerlink" title="卷积层（convolution layer）"></a>卷积层（convolution layer）</h1><h2 id="填充（padding）"><a href="#填充（padding）" class="headerlink" title="填充（padding）"></a>填充（padding）</h2><p>作用：因为深度学习的模型里会有很多层cov layer，而每层cov layer都会让原来的图变小（比如，33×33的picture，用 5×5的kernel，会产生28×28(33-(5-1))的新picture）。为了不让picture在许多层cov layer后<strong>变得太小</strong>，就会在输入周围额外添加行/列</p>
+<p><img src="/images/convolution%E5%AD%A6%E4%B9%A0/1.PNG" alt="1"></p>
+<p>为了使输出的picture size 和输入相同，padding 的大小通常取kernel size-1(kh-1,kw-1)</p>
+<h2 id="步幅（stride）"><a href="#步幅（stride）" class="headerlink" title="步幅（stride）"></a>步幅（stride）</h2><p>一般为2的倍数，成倍的减少输出size</p>
+<h2 id="多通道"><a href="#多通道" class="headerlink" title="多通道"></a>多通道</h2><h3 id="多输入"><a href="#多输入" class="headerlink" title="多输入"></a>多输入</h3><p>RGB图像就有三个通道，每个通道对应一个kernel（<strong>注意</strong>：RGB是三通道，可以看成一个feature map，H×W×D，深度不为1，filter可以看做是包含深度的kernel，而filter深度=feature map深度，即a×b×D，），结果是所有通道卷积结果的和</p>
+<p><img src="/images/convolution%E5%AD%A6%E4%B9%A0/2.PNG" alt="2"></p>
+<h3 id="多输出"><a href="#多输出" class="headerlink" title="多输出"></a>多输出</h3><p>前提:多输出和多输入没直接关联性</p>
+<p>多输出举例：RGB三通道（三个2维kernel==一个3维kernel）经过3维kernel，得到3个结果，然后求和（得到一个2维结果），如果对RGB图像，使用n个3维kernel，得到n个2维结果(一个2维结果就是一个3维kernel（一个filter）计算得到的)<img src="/images/convolution%E5%AD%A6%E4%B9%A0/3.PNG" alt="3"></p>
+<h3 id="多输入和多输入结合理解"><a href="#多输入和多输入结合理解" class="headerlink" title="多输入和多输入结合理解"></a>多输入和多输入结合理解</h3><p>多输出通道：不同的kernel识别重点不同，比如有的输出猫头特征，有的输出猫尾巴特征</p>
+<p>多输入通道：将输出通道的多个输出，进行权重相加，得到组合的特征</p>
+<h2 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h2><p>缓解卷积层对位置的敏感性（一般放在cov layer后面）</p>
+<h3 id="二维最大池化（当然还有平均池化层）"><a href="#二维最大池化（当然还有平均池化层）" class="headerlink" title="二维最大池化（当然还有平均池化层）"></a>二维最大池化（当然还有平均池化层）<img src="/images/convolution%E5%AD%A6%E4%B9%A0/4.PNG" alt="4"></h3><p>池化层也可以包括padding、stride；如果有多输入通道，每个input channel经过池化层后，直接得到输出（输出数量=输入通道数，不同于cov layer-&gt;将多输入卷积结果合成一个结果），因此，有输入-&gt;池化-&gt;输出(输入通道数=输出通道数)</p>
+<h2 id="1×1卷积"><a href="#1×1卷积" class="headerlink" title="1×1卷积"></a>1×1卷积</h2><p>升维/降维</p>
+<p><img src="/images/convolution%E5%AD%A6%E4%B9%A0/5.jpg" alt="preview"></p>
+<p>用<strong>一个</strong>&lt;1×1×同feature map深度&gt;的filter，对feature map卷积，可以将feature map深度变成1（<strong>注意</strong>：因为feature map深度为3，像RGB图一样，深度为3的filter（或者说3个1×1的kernel）卷积，是将对3个深度为1的56×56图卷积后，将结果线性相加的到深度为1的输出的）；</p>
+<p>用<strong>二个</strong>filter，可以得到56×56×2的结果(因为结果的深度都小于3，所以是<strong>降维</strong>)</p>
+<p>用<strong>n个&gt;3</strong>的filter，可以得到56×56×n的结果，是<strong>升维</strong></p>
+<p><img src="/images/convolution%E5%AD%A6%E4%B9%A0/6.jpg" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A82/" rel="prev" title="深度学习入门2">
+                  <i class="fa fa-chevron-left"></i> 深度学习入门2
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/06/pytorch%E5%AD%A6%E4%B9%A0/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">flybigpig</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
