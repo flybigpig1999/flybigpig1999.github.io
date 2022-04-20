@@ -244,7 +244,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-04-20 09:25:26 / 修改时间：09:38:46" itemprop="dateCreated datePublished" datetime="2022-04-20T09:25:26+08:00">2022-04-20</time>
+      <time title="创建时间：2022-04-20 09:25:26 / 修改时间：10:02:00" itemprop="dateCreated datePublished" datetime="2022-04-20T09:25:26+08:00">2022-04-20</time>
     </span>
 
   
@@ -258,25 +258,25 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="卷积层（convolution-layer）"><a href="#卷积层（convolution-layer）" class="headerlink" title="卷积层（convolution layer）"></a>卷积层（convolution layer）</h1><h2 id="填充（padding）"><a href="#填充（padding）" class="headerlink" title="填充（padding）"></a>填充（padding）</h2><p>作用：因为深度学习的模型里会有很多层cov layer，而每层cov layer都会让原来的图变小（比如，33×33的picture，用 5×5的kernel，会产生28×28(33-(5-1))的新picture）。为了不让picture在许多层cov layer后<strong>变得太小</strong>，就会在输入周围额外添加行/列</p>
-<p><img src="/images/covlution-%E5%AD%A6%E4%B9%A0/1.PNG" alt="1"></p>
+<p><img src="/../images/covlution-%E5%AD%A6%E4%B9%A0/1.PNG" alt="1"></p>
 <p>为了使输出的picture size 和输入相同，padding 的大小通常取kernel size-1(kh-1,kw-1)</p>
 <h2 id="步幅（stride）"><a href="#步幅（stride）" class="headerlink" title="步幅（stride）"></a>步幅（stride）</h2><p>一般为2的倍数，成倍的减少输出size</p>
 <h2 id="多通道"><a href="#多通道" class="headerlink" title="多通道"></a>多通道</h2><h3 id="多输入"><a href="#多输入" class="headerlink" title="多输入"></a>多输入</h3><p>RGB图像就有三个通道，每个通道对应一个kernel（<strong>注意</strong>：RGB是三通道，可以看成一个feature map，H×W×D，深度不为1，filter可以看做是包含深度的kernel，而filter深度=feature map深度，即a×b×D，），结果是所有通道卷积结果的和</p>
-<p><img src="/images/covlution-%E5%AD%A6%E4%B9%A0/2-16504186753091.PNG" alt="2"></p>
+<p><img src="/../images/covlution-%E5%AD%A6%E4%B9%A0/2-16504186753091.PNG" alt="2"></p>
 <h3 id="多输出"><a href="#多输出" class="headerlink" title="多输出"></a>多输出</h3><p>前提:多输出和多输入没直接关联性</p>
 <p>多输出举例：RGB三通道（三个2维kernel==一个3维kernel）经过3维kernel，得到3个结果，然后求和（得到一个2维结果），如果对RGB图像，使用n个3维kernel，得到n个2维结果(一个2维结果就是一个3维kernel（一个filter）计算得到的)</p>
-<p><img src="/images/covlution-%E5%AD%A6%E4%B9%A0/3.PNG" alt="3"></p>
+<p><img src="/../images/covlution-%E5%AD%A6%E4%B9%A0/3.PNG" alt="3"></p>
 <h3 id="多输入和多输入结合理解"><a href="#多输入和多输入结合理解" class="headerlink" title="多输入和多输入结合理解"></a>多输入和多输入结合理解</h3><p>多输出通道：不同的kernel识别重点不同，比如有的输出猫头特征，有的输出猫尾巴特征</p>
 <p>多输入通道：将输出通道的多个输出，进行权重相加，得到组合的特征</p>
 <h2 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h2><p>缓解卷积层对位置的敏感性（一般放在cov layer后面）</p>
-<h3 id="二维最大池化（当然还有平均池化层）"><a href="#二维最大池化（当然还有平均池化层）" class="headerlink" title="二维最大池化（当然还有平均池化层）"></a>二维最大池化（当然还有平均池化层）</h3><p><img src="/images/covlution-%E5%AD%A6%E4%B9%A0/4.PNG" alt="4"></p>
+<h3 id="二维最大池化（当然还有平均池化层）"><a href="#二维最大池化（当然还有平均池化层）" class="headerlink" title="二维最大池化（当然还有平均池化层）"></a>二维最大池化（当然还有平均池化层）</h3><p><img src="/../images/covlution-%E5%AD%A6%E4%B9%A0/4.PNG" alt="4"></p>
 <p>池化层也可以包括padding、stride；如果有多输入通道，每个input channel经过池化层后，直接得到输出（输出数量=输入通道数，不同于cov layer-&gt;将多输入卷积结果合成一个结果），因此，有输入-&gt;池化-&gt;输出(输入通道数=输出通道数)</p>
 <h2 id="1×1卷积"><a href="#1×1卷积" class="headerlink" title="1×1卷积"></a>1×1卷积</h2><p>升维/降维</p>
-<p><img src="/images/covlution-%E5%AD%A6%E4%B9%A0/5.jpg" alt="5"></p>
+<p><img src="/../images/covlution-%E5%AD%A6%E4%B9%A0/5.jpg" alt="5"></p>
 <p>用<strong>一个</strong>&lt;1×1×同feature map深度&gt;的filter，对feature map卷积，可以将feature map深度变成1（<strong>注意</strong>：因为feature map深度为3，像RGB图一样，深度为3的filter（或者说3个1×1的kernel）卷积，是将对3个深度为1的56×56图卷积后，将结果线性相加的到深度为1的输出的）；</p>
 <p>用<strong>二个</strong>filter，可以得到56×56×2的结果(因为结果的深度都小于3，所以是<strong>降维</strong>)</p>
 <p>用<strong>n个&gt;3</strong>的filter，可以得到56×56×n的结果，是<strong>升维</strong></p>
-<p><img src="/images/covlution-%E5%AD%A6%E4%B9%A0/6.jpg" alt="6"></p>
+<p><img src="/../images/covlution-%E5%AD%A6%E4%B9%A0/6.jpg" alt="6"></p>
 
       
     </div>
